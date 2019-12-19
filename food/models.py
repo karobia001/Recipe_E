@@ -1,40 +1,17 @@
 from django.db import models
+import datetime as dt
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from pyuploadcare.dj.models import ImageField
 
-
 # Create your models here.
-
-
-class Location(models.Model):
-    location = models.CharField(max_length= 255, blank =True)
-    
-    def save_location(self):
-        self.save()
-
-    def delete_location(self):
-        self.delete()
-    
-    @classmethod
-    def get_location(cls):
-        locations = cls.objects.all()
-        return locations
-    
-    def __str__(self):
-        return self.location
-    
-    class Meta:
-        verbose_name = 'Location'
-        verbose_name_plural = 'Locations'
-    
 class Profile(models.Model):
     bio = HTMLField()
     photo = ImageField(blank = True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    
+
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
@@ -68,40 +45,29 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.bio
-    
-class Category(models.Model):
-    category = models.CharField(max_length= 255)
-    
-    
-    def save_category(self):
-        self.save()
 
-    def delete_category(self):
-        self.delete()
-        
-    @classmethod
-    def get_category(cls):
-        categories = cls.objects.all()
-        return categories
 
-    
-    
-        
-class Food(models.Model):
-    image_name = models.CharField(max_length=255)
-    ingridients = models.TextField()
-    recipe = models.TextField()
+class Image(models.Model):
+    name = models.CharField(max_length = 60)
     picture = ImageField(blank = True, manual_crop = '1080x1080')
-    location = models.ForeignKey(Location)
-    category = models.ForeignKey(Category)
+    recipe = HTMLField()
+    posted = models.DateTimeField(auto_now_add=True)
     profile = models.ForeignKey(User, on_delete=models.CASCADE)
-    pub_date = models.DateTimeField(auto_now_add=True)
     profile_det = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
-    
+    def save_image(self):
+        self.save()
+
+    def delete_image(self):
+        self.delete()
+
+    def is_liked(self):
+        pass
+
+        
     @classmethod
-    def update_caption(self, caption):
-        update_img = cls.objects.filter(id = id).update(caption = caption)
+    def update_recipe(self, recipe):
+        update_img = cls.objects.filter(id = id).update(recipe = recipe)
         return update_img
 
     @classmethod
@@ -134,16 +100,27 @@ class Food(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['-pub_date']
+        ordering = ['posted']
 
+
+class Likes(models.Model):
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+
+    def save_like(self):
+        self.save()
+
+    def unlike_like(self):
+        self.delete()
+
+
+    
 class Comments(models.Model):
     comment = models.CharField(max_length = 300)
-    pub_date = models.DateTimeField(auto_now=True)
-    image = models.ForeignKey(Food, on_delete=models.CASCADE, related_name='comments')
+    posted_on = models.DateTimeField(auto_now=True)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    
-    
-    
+
     def save_comment(self):
         self.save()
 
@@ -154,4 +131,3 @@ class Comments(models.Model):
     def get_comments_by_images(cls, id):
         comments = Comments.objects.filter(image__pk = id)
         return comments
-    
