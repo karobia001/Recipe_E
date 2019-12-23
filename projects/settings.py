@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from decouple import config
 import django_heroku
 import dj_database_url
 from decouple import config,Csv
@@ -39,7 +40,7 @@ SECRET_KEY = '1=2qg&lk1xchnw57r_bp$39m^7!a9=98-(+qsriv*#cw=8l^(a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['recideno.heroku.com']
 
 UPLOADCARE = {
     'pub_key': '3bdec1fdd7eea0cd186a',
@@ -103,7 +104,7 @@ WSGI_APPLICATION = 'projects.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME':'recipe2',
+        'NAME':'recipe3',
         'USER': 'moringa',
         'PASSWORD':'maich001',
     }
@@ -148,14 +149,14 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [    
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Configure Django App for Heroku.
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+
 django_heroku.settings(locals())
+
