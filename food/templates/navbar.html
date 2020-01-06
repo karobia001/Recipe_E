@@ -3,7 +3,7 @@
 {{ form.media }}
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
-     <a class="smooth-scroll" href="/home"> <img src="{% static 'images/logo.png' %}" height="50" width="50" alt="">RECIPE- E</a> 
+     <a class="smooth-scroll" href="/home"> <img src="{% static 'images/logo.png' %}" height="50" width="50" alt="" style="font-family:'Anton', sans-serif;">RECIPE - <i class="fas fa-hamburger"></i></a> 
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fa fa-bars"></i>
@@ -23,25 +23,25 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link open-nav" href="{% url 'upload_image' %}" data-toggle="tooltip" data-placement="bottom" title="post food-recipe">
-                        <i class="fas fa-cloud-upload-alt"></i>
+                        <i class="fas fa-pizza-slice"></i>
                     </a>
 
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link open-nav" href="#" data-toggle="tooltip" data-placement="bottom" title="Discover People">
-                        <i class="far fa-heart"></i>
+                    <a class="nav-link open-nav" href="#" data-toggle="tooltip" data-placement="bottom" title="find your favorite chef">
+                        <i class="fas fa-glass-cheers"></i>
                     </a>
 
                 </li>
                 <li class="nav-item">
                     <a class="nav-link open-nav" href="{% url 'profile' username=user %}" data-toggle="tooltip" data-placement="bottom" title="Profile">
-                        <i class="far fa-user show"></i>
+                        <i class="fas fa-user-ninja"></i>  
                     </a>
 
                 
                 <li class="nav-item">
                     <a class="nav-link open-nav" data-toggle="modal" data-target="#settings" data-toggle="tooltip" data-placement="bottom" title="Settings">
-                        <i class="fas fa-th"></i>
+                        <i class="fas fa-toolbox"></i>
                     </a>
 
                 </li>
